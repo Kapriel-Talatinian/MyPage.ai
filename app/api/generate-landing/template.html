@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ name }} - {{ profession }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <style>
+    :root {
+      --primary: #1A1B1F;
+      --accent: #4F46E5;
+      --cta: #EC4899;
+      --light: #FFFFFF;
+      --bg-gradient: linear-gradient(135deg, #4F46E5 0%, #9333EA 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--light);
+      color: var(--primary);
+      line-height: 1.6;
+    }
+
+    .hero {
+      background: var(--bg-gradient);
+      color: white;
+      text-align: center;
+      padding: 4rem 1rem 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: var(--light);
+      clip-path: ellipse(65% 100% at 50% 100%);
+    }
+
+    .hero img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid white;
+      object-fit: cover;
+      margin-bottom: 1.5rem;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .hero img:hover {
+      transform: scale(1.05) rotate(5deg);
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin: 0.5rem 0;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      font-size: 1.4rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .section {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+    }
+
+    .section:hover {
+      transform: translateY(-5px);
+    }
+
+    .section h2 {
+      color: var(--accent);
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .section h2 svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f8f8f8;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .calendar-day:hover {
+      background: var(--accent);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .calendar-day.selected {
+      background: var(--accent);
+      color: white;
+    }
+
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .time-slot {
+      padding: 0.8rem;
+      text-align: center;
+      background: #f8f8f8;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .time-slot:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .time-slot.selected {
+      background: var(--accent);
+      color: white;
+    }
+
+    .cta {
+      background: var(--cta);
+      color: white;
+      padding: 1.4rem 2rem;
+      border-radius: 15px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(236,72,153,0.3);
+      text-decoration: none;
+    }
+
+    .cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(236,72,153,0.4);
+    }
+
+    .badge-list {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .badge {
+      background: #f0f0f0;
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .photo-upload {
+      width: 100%;
+      height: 200px;
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    .photo-upload:hover {
+      border-color: var(--accent);
+      background: #f8f8f8;
+    }
+
+    .photo-upload svg {
+      width: 40px;
+      height: 40px;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .photo-upload p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 0;
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1.2rem;
+      }
+      
+      .section {
+        margin: 1.5rem;
+        padding: 1.5rem;
+      }
+
+      .calendar-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    [data-aos] {
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+  </style>
+</head>
+<body>
+  <section class="hero" data-aos="fade-up">
+    <div class="photo-upload" id="profilePhotoUpload">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+      </svg>
+      <p>Cliquez pour ajouter votre photo</p>
+    </div>
+    <h1>{{ name }}</h1>
+    <p>{{ profession }}</p>
+  </section>
+
+  <section class="section" data-aos="fade-up">
+    <h2>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+      </svg>
+      Présentation
+    </h2>
+    <p>{{ bio }}</p>
+  </section>
+
+  <section class="section" data-aos="fade-up">
+    <h2>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+      </svg>
+      Réserver un rendez-vous
+    </h2>
+    <div id="calendar">
+      <div class="calendar-grid" id="calendarGrid">
+        <!-- Days will be dynamically inserted here -->
+      </div>
+      <div class="time-slots" id="timeSlots" style="display: none;">
+        <!-- Time slots will be dynamically inserted here -->
+      </div>
+    </div>
+    <button id="bookingButton" class="cta" style="display: none;">
+      💳 Réserver ce créneau
+    </button>
+  </section>
+
+  <section class="section" data-aos="fade-up">
+    <h2>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+      </svg>
+      Contact
+    </h2>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        {{ phone }}
+      </div>
+      <div class="contact-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        {{ email }}
+      </div>
+      <div class="contact-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+        {{ social }}
+      </div>
+    </div>
+  </section>
+
+  <footer data-aos="fade-up">
+    Développé avec <span class="heart">❤️</span> par Kapriel Talatinian
+  </footer>
+
+  <script>
+    // Initialize calendar
+    const calendar = document.getElementById('calendar');
+    const calendarGrid = document.getElementById('calendarGrid');
+    const timeSlots = document.getElementById('timeSlots');
+    const bookingButton = document.getElementById('bookingButton');
+    let selectedDate = null;
+    let selectedTime = null;
+
+    // Generate next 7 days
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      days.push(date);
+    }
+
+    // Create calendar days
+    days.forEach(date => {
+      const dayElement = document.createElement('div');
+      dayElement.className = 'calendar-day';
+      dayElement.innerHTML = `
+        <span style="font-size: 0.8rem">${date.toLocaleDateString('fr-FR', { weekday: 'short' })}</span>
+        <span style="font-weight: bold">${date.getDate()}</span>
+      `;
+      dayElement.addEventListener('click', () => selectDate(date, dayElement));
+      calendarGrid.appendChild(dayElement);
+    });
+
+    // Time slots
+    const availableTimeSlots = [
+      '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'
+    ];
+
+    function selectDate(date, element) {
+      // Reset previous selection
+      document.querySelectorAll('.calendar-day').forEach(day => {
+        day.classList.remove('selected');
+      });
+      
+      // Select new date
+      element.classList.add('selected');
+      selectedDate = date;
+      
+      // Show time slots
+      timeSlots.style.display = 'grid';
+      timeSlots.innerHTML = '';
+      
+      availableTimeSlots.forEach(time => {
+        const slot = document.createElement('div');
+        slot.className = 'time-slot';
+        slot.textContent = time;
+        slot.addEventListener('click', () => selectTime(time, slot));
+        timeSlots.appendChild(slot);
+      });
+    }
+
+    function selectTime(time, element) {
+      // Reset previous selection
+      document.querySelectorAll('.time-slot').forEach(slot => {
+        slot.classList.remove('selected');
+      });
+      
+      // Select new time
+      element.classList.add('selected');
+      selectedTime = time;
+      
+      // Show booking button
+      bookingButton.style.display = 'inline-flex';
+    }
+
+    // Handle photo upload
+    const photoUpload = document.getElementById('profilePhotoUpload');
+    photoUpload.addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            photoUpload.innerHTML = `<img src="${e.target.result}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">`;
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+      input.click();
+    });
+
+    // Handle booking
+    bookingButton.addEventListener('click', async () => {
+      if (!selectedDate || !selectedTime) return;
+
+      const bookingDateTime = new Date(selectedDate);
+      const [hours, minutes] = selectedTime.split(':');
+      bookingDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+
+      try {
+        const response = await fetch('/api/create-payment-intent', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: {{ rate }} * 100,
+            customerName: '{{ name }}',
+            startTime: bookingDateTime.toISOString(),
+          }),
+        });
+
+        if (!response.ok) throw new Error('Failed to create payment intent');
+
+        const { clientSecret } = await response.json();
+        const stripe = Stripe('{{ stripe_publishable_key }}');
+        
+        const { error } = await stripe.redirectToCheckout({
+          sessionId: clientSecret,
+        });
+
+        if (error) throw error;
+      } catch (err) {
+        console.error('Booking error:', err);
+        alert('Une erreur est survenue lors de la réservation. Veuillez réessayer.');
+      }
+    });
+  </script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      offset: 100,
+      once: true
+    });
+
+    document.querySelector('.heart').addEventListener('mouseover', function() {
+      this.style.transform = 'scale(1.2)';
+      setTimeout(() => this.style.transform = 'scale(1)', 300);
+    });
+  </script>
+</body>
+</html> 

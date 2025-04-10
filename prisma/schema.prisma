@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  sites     Site[]
+  payments  Payment[]
+
+  @@map("users")
+}
+
+model Site {
+  id          String        @id @default(uuid())
+  userId      String        @map("user_id")
+  name        String
+  description String?
+  customUrl   String?       @unique @map("custom_url")
+  content     Json
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analytics   SiteAnalytics?
+
+  @@map("sites")
+}
+
+model Payment {
+  id              String   @id @default(uuid())
+  userId          String   @map("user_id")
+  amount          Decimal  @db.Decimal(10, 2)
+  status          String
+  paymentIntentId String?  @unique @map("payment_intent_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+model SiteAnalytics {
+  id               String   @id @default(uuid())
+  siteId           String   @unique @map("site_id")
+  pageViews        Int      @default(0) @map("page_views")
+  uniqueVisitors   Int      @default(0) @map("unique_visitors")
+  averageTimeSpent Int      @default(0) @map("average_time_spent")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  site             Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@map("site_analytics")
+}
+
+model Service {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  duration    Int       // Duration in minutes
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Booking {
+  id          String    @id @default(cuid())
+  serviceId   String
+  service     Service   @relation(fields: [serviceId], references: [id])
+  customerName String
+  customerEmail String
+  startTime   DateTime
+  endTime     DateTime
+  status      String    @default("pending") // pending, confirmed, cancelled
+  paymentId   String?   // Stripe payment ID
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+} 

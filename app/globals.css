@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #4F46E5;
+  --primary-dark: #4338CA;
+  --secondary: #10B981;
+  --accent: #F59E0B;
+  --background: #F9FAFB;
+  --text: #1F2937;
+  --text-light: #6B7280;
+}
+
+@layer base {
+  body {
+    @apply bg-gradient-to-b from-white to-gray-50 text-gray-900 antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-gray-700 hover:bg-gray-50 focus:ring-gray-500 border border-gray-300 shadow-sm hover:shadow;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300;
+  }
+
+  .input {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200;
+  }
+
+  .section {
+    @apply py-20 px-4 sm:px-6 lg:px-8;
+  }
+
+  .container {
+    @apply max-w-7xl mx-auto;
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Gradient Text */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-indigo-600 rounded-full;
+}
+
+/* Hover Effects */
+.hover-scale {
+  @apply transition-transform duration-300 hover:scale-105;
+}
+
+/* Responsive Typography */
+@screen sm {
+  html {
+    font-size: 16px;
+  }
+}
+
+@screen md {
+  html {
+    font-size: 18px;
+  }
+}
+
+@screen lg {
+  html {
+    font-size: 20px;
+  }
+}
+
+/* Remove custom button classes and use Tailwind directly */
+/* The button styles are now defined in the component */
+
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(14deg); }
+  30% { transform: rotate(-8deg); }
+  40% { transform: rotate(14deg); }
+  50% { transform: rotate(-4deg); }
+  60% { transform: rotate(10deg); }
+  70% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.wave {
+  @apply inline-block;
+  transform-origin: 70% 70%;
+  animation: wave 1.5s infinite;
+}
+
+#form-container {
+  @apply max-w-2xl mx-auto p-6;
+}
+
+#questions {
+  @apply flex flex-col gap-6;
+}
+
+.question {
+  @apply flex flex-col gap-2;
+}
+
+.question label {
+  @apply block text-lg font-medium text-gray-900;
+}
+
+input, select, textarea {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg transition-colors duration-200;
+}
+
+input:focus, select:focus, textarea:focus {
+  @apply outline-none border-indigo-600 ring-2 ring-indigo-600 ring-opacity-20;
+}
+
+input:hover, select:hover, textarea:hover {
+  @apply border-gray-400;
+}
+
+#navigation-buttons {
+  @apply flex justify-between mt-8;
+}
+
+#final-message {
+  @apply text-center text-2xl font-medium text-gray-900;
+}
+
+input::placeholder {
+  @apply text-sm text-gray-400;
+}
+
+.error-message {
+  @apply text-red-500 text-sm mt-1;
+} 
