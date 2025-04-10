@@ -2,10 +2,11 @@ import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 
-interface PageProps {
+type PageProps = {
   params: {
     id: string
   }
+  searchParams: { [key: string]: string | string[] | undefined }
 }
 
 export default async function EditSitePage({ params }: PageProps) {
