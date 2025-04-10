@@ -1,13 +1,14 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
 
-export default async function EditSitePage({
-  params
-}: {
-  params: { id: string }
-}) {
+interface PageProps {
+  params: {
+    id: string
+  }
+}
+
+export default async function EditSitePage({ params }: PageProps) {
   const { userId } = await auth()
 
   if (!userId) {
@@ -91,11 +92,13 @@ export default async function EditSitePage({
             </div>
 
             <div className="flex justify-end space-x-3">
-              <Link href="/dashboard">
-                <Button variant="secondary">
-                  Annuler
-                </Button>
-              </Link>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => window.location.href = '/dashboard/sites'}
+              >
+                Annuler
+              </Button>
               <Button type="submit">
                 Enregistrer les modifications
               </Button>
